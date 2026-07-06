@@ -1,0 +1,136 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transform-origin: center center;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(72, 78, 88, 0.48);
+  z-index: 0;
+}
+
+.overlayExiting {
+  animation: vsHandoff 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.overlayExiting .backdrop {
+  animation: backdropDeepen 0.5s ease forwards;
+}
+
+.vsRow {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 3vw, 2rem);
+  padding: 0 3vw;
+  max-width: 100%;
+}
+
+.vsWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.vsGlow,
+.vsText {
+  font-size: clamp(5rem, 18vw, 12rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+}
+
+.vsHeading {
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.vsGlow {
+  position: absolute;
+  color: #ff9800;
+  filter: blur(20px);
+  opacity: 0.7;
+}
+
+.vsText {
+  position: relative;
+  color: #ffd700;
+  text-shadow:
+    0 0 30px #ff9800,
+    0 0 60px #ff5722,
+    4px 4px 0 #b71c1c;
+  -webkit-text-stroke: 2px rgba(0, 0, 0, 0.5);
+}
+
+.vsEnter {
+  animation: vsFlyIn 0.7s cubic-bezier(0.17, 0.67, 0.21, 1.02) forwards;
+}
+
+.vsSlam {
+  animation: vsSlam 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+}
+
+.labelLeft,
+.labelRight {
+  white-space: nowrap;
+  animation: labelFade 0.5s ease 0.5s both;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+}
+
+.labelLeft {
+  color: #90caf9;
+  text-align: right;
+  text-shadow:
+    0 0 20px rgba(66, 165, 245, 0.6),
+    2px 2px 0 rgba(0, 0, 0, 0.45);
+}
+
+.labelRight {
+  color: #ef9a9a;
+  text-align: left;
+  text-shadow:
+    0 0 20px rgba(239, 83, 80, 0.6),
+    2px 2px 0 rgba(0, 0, 0, 0.45);
+}
+
+@keyframes vsHandoff {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(1.35); opacity: 0; }
+}
+
+@keyframes backdropDeepen {
+  to { background: rgba(48, 52, 60, 0.72); }
+}
+
+@keyframes vsFlyIn {
+  0% { opacity: 0; transform: scale(5) rotate(-25deg); }
+  70% { opacity: 1; transform: scale(0.85) rotate(5deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes vsSlam {
+  0% { transform: scale(1.3); }
+  50% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+@keyframes labelFade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}

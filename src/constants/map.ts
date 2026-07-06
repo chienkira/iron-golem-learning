@@ -1,0 +1,9 @@
+export const GROUND_SIZE = 100;
+export const MAP_SIZE = 80;
+export const MAP_BOUND = 90;
+export const MOVE_SPEED = 8;
+export const ARRIVAL_THRESHOLD = 1;
+export const CAMERA_HEIGHT = 20;
+export const CAMERA_DISTANCE = 22;
+export const CAMERA_OVERVIEW_HEIGHT = 80;
+export const CAMERA_OVERVIEW_DISTANCE = 62;

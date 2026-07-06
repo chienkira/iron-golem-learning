@@ -1,0 +1,258 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lightningFlash {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  pointer-events: none;
+  background: rgba(220, 235, 255, 0.35);
+  animation: lightningBurst 0.15s ease forwards;
+}
+
+.sceneBg {
+  position: absolute;
+  inset: 0;
+}
+
+.sceneEnter {
+  animation: combatFadeIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes combatFadeIn {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.topHud {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.headName {
+  font-family: var(--font);
+  font-size: clamp(11px, 2.5vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  padding: 3px 12px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.72);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.headNamePlayer {
+  color: #90caf9;
+  border: 2px solid rgba(66, 165, 245, 0.65);
+}
+
+.headNameMonster {
+  color: #ef9a9a;
+  border: 2px solid rgba(239, 83, 80, 0.65);
+}
+
+.vsBadge {
+  font-size: clamp(0.65rem, 2vw, 0.9rem);
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #ffd700;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-radius: 4px;
+  padding: 0.25rem 0.75rem;
+}
+
+.questionZone {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  width: 90%;
+  max-width: 560px;
+}
+
+.question {
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.05em;
+  background: rgba(0, 0, 0, 0.65);
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  border-radius: 16px;
+  padding: 0.6rem 1.75rem;
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
+
+.answerInline {
+  display: inline-block;
+  min-width: 1.2em;
+  color: #ffd700;
+  text-shadow: 0 0 16px rgba(255, 215, 0, 0.6);
+  border-bottom: 3px solid #ffd700;
+  padding: 0 0.15em;
+}
+
+.shake {
+  animation: shake 0.4s ease;
+  color: #ef5350;
+  border-color: rgba(239, 83, 80, 0.6);
+}
+
+.shake .answerInline {
+  color: #ef5350;
+  border-bottom-color: #ef5350;
+}
+
+.combatPanel {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  background: rgba(0, 0, 0, 0.72);
+  border: 2px solid rgba(255, 215, 0, 0.45);
+  border-radius: 16px;
+  padding: 0.75rem 1rem 1rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+  width: min(300px, 80vw);
+}
+
+.numpadBtn {
+  font-family: var(--font);
+  font-size: clamp(1.2rem, 3.5vw, 1.7rem);
+  font-weight: 700;
+  padding: 0.65rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #455a64, #263238);
+  color: #fff;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.1s;
+  box-shadow: 0 3px 0 #1a1a2e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.numpadBtn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #1a1a2e;
+}
+
+.submitBtn {
+  background: linear-gradient(145deg, #43a047, #2e7d32);
+  color: #fff;
+  border-color: rgba(76, 175, 80, 0.4);
+  box-shadow: 0 3px 0 #1b5e20;
+}
+
+.clearBtn {
+  background: linear-gradient(145deg, #e53935, #c62828);
+  color: #fff;
+  border-color: rgba(239, 83, 80, 0.4);
+  box-shadow: 0 3px 0 #b71c1c;
+}
+
+.clearLabel {
+  font-size: clamp(0.85rem, 2.5vw, 1.1rem) !important;
+}
+
+.skipBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 20;
+  font-family: var(--font);
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.skipBtn:active {
+  background: rgba(229, 57, 53, 0.7);
+  border-color: #ef5350;
+}
+
+.levelUpBanner,
+.victoryBanner {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  font-weight: 700;
+  z-index: 30;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.victoryBanner {
+  color: #ffd700;
+  text-shadow: 0 0 24px #ff9800, 0 2px 8px rgba(0, 0, 0, 0.85);
+  animation: victoryPop 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.levelUpBanner {
+  color: #ffd700;
+  text-shadow: 0 0 30px #ff9800, 0 0 60px #ff5722;
+  animation: levelPulse 1s ease infinite;
+}
+
+@keyframes lightningBurst {
+  0% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-8px); }
+  80% { transform: translateX(8px); }
+}
+
+@keyframes victoryPop {
+  from { opacity: 0; transform: translateX(-50%) scale(0.85); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes levelPulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.1); }
+}
