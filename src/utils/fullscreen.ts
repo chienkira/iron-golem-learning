@@ -69,21 +69,3 @@ export function requestGameFullscreen(): void {
     if (tryEnterFullscreen(target)) return;
   }
 }
-
-export function exitGameFullscreen(): void {
-  document.documentElement.classList.remove('game-immersive');
-  document.body.classList.remove('game-immersive');
-
-  if (!document.fullscreenElement) return;
-
-  const doc = document as Document & { webkitExitFullscreen?: () => void };
-  try {
-    if (doc.exitFullscreen) {
-      void doc.exitFullscreen();
-    } else if (doc.webkitExitFullscreen) {
-      doc.webkitExitFullscreen();
-    }
-  } catch {
-    // ignore
-  }
-}

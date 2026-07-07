@@ -132,15 +132,13 @@ export function CombatOverlay() {
   const appendDigit = useGameStore((s) => s.appendDigit);
   const clearAnswer = useGameStore((s) => s.clearAnswer);
   const submitAnswer = useGameStore((s) => s.submitAnswer);
-  const finishVictory = useGameStore((s) => s.finishVictory);
-  const finishLevelUp = useGameStore((s) => s.finishLevelUp);
+  const finishRewardScreen = useGameStore((s) => s.finishRewardScreen);
   const exitCombat = useGameStore((s) => s.exitCombat);
 
   const [attacking, setAttacking] = useState(false);
   const [showExplosion, setShowExplosion] = useState(false);
   const [wrongShake, setWrongShake] = useState(false);
   const [flash, setFlash] = useState(false);
-  const [lightning, setLightning] = useState(false);
   const [combatIntroKey, setCombatIntroKey] = useState(0);
   const [showReward, setShowReward] = useState(false);
 
@@ -151,14 +149,6 @@ export function CombatOverlay() {
   }, [phase]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setLightning(true);
-      setTimeout(() => setLightning(false), 150);
-    }, 3000 + Math.random() * 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
     if (phase === 'victory' || phase === 'level-up') {
       setAttacking(true);
       setShowExplosion(true);
@@ -167,8 +157,7 @@ export function CombatOverlay() {
 
       const rewardTimer = window.setTimeout(() => setShowReward(true), 450);
       const finishTimer = window.setTimeout(() => {
-        if (phase === 'level-up') finishLevelUp();
-        else finishVictory();
+        finishRewardScreen();
         setAttacking(false);
         setShowExplosion(false);
         setFlash(false);
@@ -182,7 +171,7 @@ export function CombatOverlay() {
     }
 
     setShowReward(false);
-  }, [phase, finishVictory, finishLevelUp]);
+  }, [phase, finishRewardScreen]);
 
   const handleSubmit = () => {
     const correct = submitAnswer();
@@ -208,8 +197,6 @@ export function CombatOverlay() {
   return (
     <CinematicFrame flash={flash && (phase === 'victory' || phase === 'level-up')}>
       <div className={styles.overlay}>
-        {lightning && <div className={styles.lightningFlash} />}
-
         {phase === 'combat' && (
           <button
             className={styles.skipBtn}

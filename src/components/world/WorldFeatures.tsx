@@ -49,7 +49,7 @@ function hash2(x: number, z: number): number {
   return h - Math.floor(h);
 }
 
-export function generateGridPositions(
+function generateGridPositions(
   coverage: number,
   step: number,
   half: number,

@@ -5,8 +5,11 @@ export const vi = {
 
   start: {
     play: '▶ Bắt đầu',
-    mute: '🔊 Tắt tiếng',
-    unmute: '🔇 Bật tiếng',
+    mute: '🔇 Tắt tiếng',
+    unmute: '🔊 Bật tiếng',
+    progress: (level: number, coins: number, max: number) =>
+      `Cấp ${level} (${coins}/${max} xu)`,
+    reset: '↺ Chơi lại từ đầu',
   },
 
   hud: {

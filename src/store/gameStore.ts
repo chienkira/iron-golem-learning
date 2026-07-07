@@ -2,6 +2,11 @@ import { create } from 'zustand';
 import type { GamePhase, MathQuestion, Monster } from '../types/game';
 import { COINS_PER_LEVEL, MONSTER_CONFIGS } from '../types/game';
 import { generateQuestion } from '../utils/mathQuestion';
+import {
+  clearPlayerProgress,
+  loadPlayerProgress,
+  savePlayerProgress,
+} from '../utils/playerProgress';
 import { spawnInitialMonsters, spawnMonster } from '../utils/spawnMonsters';
 
 interface GameState {
@@ -19,6 +24,7 @@ interface GameState {
   mapZoom: 'normal' | 'overview';
 
   startGame: () => void;
+  resetProgress: () => void;
   setMoveTarget: (target: [number, number] | null) => void;
   toggleMapZoom: () => void;
   updatePlayerPosition: (pos: [number, number, number], rot: number) => void;
@@ -27,17 +33,18 @@ interface GameState {
   appendDigit: (digit: string) => void;
   clearAnswer: () => void;
   submitAnswer: () => boolean;
-  finishVictory: () => void;
-  finishLevelUp: () => void;
+  finishRewardScreen: () => void;
   exitCombat: () => void;
 }
+
+const savedProgress = loadPlayerProgress();
 
 export const useGameStore = create<GameState>((set, get) => ({
   phase: 'menu',
   playerPosition: [0, 0, 0],
   playerRotation: 0,
-  level: 1,
-  coinsInLevel: 0,
+  level: savedProgress.level,
+  coinsInLevel: savedProgress.coinsInLevel,
   monsters: spawnInitialMonsters(),
   activeMonster: null,
   question: null,
@@ -49,6 +56,24 @@ export const useGameStore = create<GameState>((set, get) => ({
   setMoveTarget: (target) => set({ moveTarget: target }),
 
   startGame: () => set({ phase: 'explore', moveTarget: null }),
+
+  resetProgress: () => {
+    clearPlayerProgress();
+    set({
+      phase: 'menu',
+      level: 1,
+      coinsInLevel: 0,
+      playerPosition: [0, 0, 0],
+      playerRotation: 0,
+      monsters: spawnInitialMonsters(),
+      activeMonster: null,
+      question: null,
+      userAnswer: '',
+      moveTarget: null,
+      lastReward: 0,
+      mapZoom: 'normal',
+    });
+  },
 
   toggleMapZoom: () =>
     set((s) => ({ mapZoom: s.mapZoom === 'normal' ? 'overview' : 'normal' })),
@@ -106,6 +131,8 @@ export const useGameStore = create<GameState>((set, get) => ({
         ? [...remainingMonsters, spawnMonster(remainingMonsters)]
         : remainingMonsters;
 
+    savePlayerProgress({ level: newLevel, coinsInLevel: newCoinsInLevel });
+
     set({
       phase: newPhase,
       coinsInLevel: newCoinsInLevel,
@@ -116,15 +143,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     return true;
   },
 
-  finishVictory: () =>
-    set({
-      phase: 'explore',
-      activeMonster: null,
-      question: null,
-      userAnswer: '',
-    }),
-
-  finishLevelUp: () =>
+  finishRewardScreen: () =>
     set({
       phase: 'explore',
       activeMonster: null,

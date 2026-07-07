@@ -38,11 +38,6 @@ class SoundEngine {
     return this.muted;
   }
 
-  setMuted(muted: boolean) {
-    this.muted = muted;
-    this.syncPlayback();
-  }
-
   startExploreBgm() {
     if (typeof window === 'undefined') return;
     this.exploreBgmActive = true;

@@ -1,14 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
 
 :root {
-  --gold: #ffd700;
-  --gold-dark: #daa520;
-  --green: #4caf50;
-  --green-dark: #2e7d32;
-  --red: #e53935;
-  --blue: #42a5f5;
-  --purple: #9c27b0;
-  --bg-dark: rgba(0, 0, 0, 0.75);
   --font: 'Fredoka', sans-serif;
 }
 
