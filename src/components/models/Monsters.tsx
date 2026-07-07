@@ -51,13 +51,19 @@ function CreeperModel({ animated, scale = 1 }: { animated?: boolean; scale?: num
 
 function BeeModel({ animated, scale = 1 }: { animated?: boolean; scale?: number }) {
   const ref = useRef<THREE.Group>(null);
+  const leftWingRef = useRef<THREE.Group>(null);
+  const rightWingRef = useRef<THREE.Group>(null);
   const { yellow, black, wing } = MC.bee;
 
   useFrame(() => {
-    if (!ref.current || !animated) return;
     const t = Date.now() * 0.004;
-    ref.current.position.y = 0.32 + Math.sin(t * 2) * 0.07;
-    ref.current.rotation.y = Math.sin(t * 0.5) * 0.1;
+    if (ref.current && animated) {
+      ref.current.position.y = 0.32 + Math.sin(t * 2) * 0.07;
+      ref.current.rotation.y = Math.sin(t * 0.5) * 0.1;
+    }
+    const wingAngle = Math.sin(t * 28) * 0.55;
+    if (leftWingRef.current) leftWingRef.current.rotation.z = 0.2 + wingAngle;
+    if (rightWingRef.current) rightWingRef.current.rotation.z = -0.2 - wingAngle;
   });
 
   const wingMat = (
@@ -74,27 +80,21 @@ function BeeModel({ animated, scale = 1 }: { animated?: boolean; scale?: number 
 
   return (
     <group ref={ref} scale={scale}>
-      <VoxelBox position={[0, 0.38, 0.2]} size={[0.36, 0.36, 0.36]} color={yellow} />
-      <VoxelBox position={[-0.1, 0.4, 0.39]} size={[0.08, 0.08, 0.02]} color={black} />
-      <VoxelBox position={[0.1, 0.4, 0.39]} size={[0.08, 0.08, 0.02]} color={black} />
-      <VoxelBox position={[-0.09, 0.6, 0.16]} size={[0.05, 0.16, 0.05]} color={black} />
-      <VoxelBox position={[0.09, 0.6, 0.16]} size={[0.05, 0.16, 0.05]} color={black} />
-      <VoxelBox position={[0, 0.34, -0.02]} size={[0.34, 0.3, 0.34]} color={yellow} />
-      <VoxelBox position={[0, 0.34, -0.02]} size={[0.36, 0.1, 0.36]} color={black} />
-      <VoxelBox position={[0, 0.32, -0.24]} size={[0.32, 0.28, 0.2]} color={yellow} />
-      <VoxelBox position={[0, 0.32, -0.34]} size={[0.32, 0.1, 0.22]} color={black} />
-      <VoxelBox position={[0, 0.32, -0.44]} size={[0.3, 0.24, 0.18]} color={yellow} />
-      <VoxelBox position={[0, 0.32, -0.52]} size={[0.3, 0.1, 0.18]} color={black} />
-      <VoxelBox position={[0, 0.3, -0.6]} size={[0.26, 0.2, 0.14]} color={yellow} />
-      <VoxelBox position={[0, 0.28, -0.66]} size={[0.22, 0.1, 0.12]} color={black} />
-      <VoxelBox position={[0, 0.26, -0.74]} size={[0.06, 0.06, 0.1]} color={black} />
-      <group position={[0, 0.38, -0.02]}>
-        <mesh position={[-0.34, 0, 0.02]} rotation={[0.15, 0.1, 0.35]}>
-          <boxGeometry args={[0.58, 0.025, 0.46]} />
+      <VoxelBox position={[0, 0.36, 0.16]} size={[0.34, 0.34, 0.34]} color={yellow} />
+      <VoxelBox position={[-0.09, 0.38, 0.34]} size={[0.07, 0.07, 0.02]} color={black} />
+      <VoxelBox position={[0.09, 0.38, 0.34]} size={[0.07, 0.07, 0.02]} color={black} />
+      <VoxelBox position={[0, 0.34, -0.1]} size={[0.32, 0.28, 0.36]} color={yellow} />
+      <VoxelBox position={[0, 0.34, 0]} size={[0.34, 0.1, 0.38]} color={black} />
+      <VoxelBox position={[0, 0.34, -0.2]} size={[0.34, 0.1, 0.34]} color={black} />
+      <group ref={leftWingRef} position={[0, 0.36, -0.04]}>
+        <mesh position={[-0.3, 0, 0.02]} rotation={[0.15, 0.1, 0.35]}>
+          <boxGeometry args={[0.52, 0.025, 0.4]} />
           {wingMat}
         </mesh>
-        <mesh position={[0.34, 0, 0.02]} rotation={[0.15, -0.1, -0.35]}>
-          <boxGeometry args={[0.58, 0.025, 0.46]} />
+      </group>
+      <group ref={rightWingRef} position={[0, 0.36, -0.04]}>
+        <mesh position={[0.3, 0, 0.02]} rotation={[0.15, -0.1, -0.35]}>
+          <boxGeometry args={[0.52, 0.025, 0.4]} />
           {wingMat}
         </mesh>
       </group>

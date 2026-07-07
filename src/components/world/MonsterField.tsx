@@ -51,7 +51,7 @@ function MapMonster({ monster }: MapMonsterProps) {
           document.body.style.cursor = 'default';
         }}
       >
-        <MonsterModel type={monster.type} animated={false} />
+        <MonsterModel type={monster.type} animated={monster.type === 'bee'} />
         <MonsterCoinLabel type={monster.type} />
         <mesh visible={false}>
           <cylinderGeometry args={[1.4, 1.4, 3.5, 8]} />
