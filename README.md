@@ -39,6 +39,5 @@ Mở trình duyệt tại `http://localhost:5173` (tối ưu cho iPad và PC).
 ## Build production
 
 ```bash
-npm run build
-npm run preview
+npm run build && scp -r dist/* chienkira.a1-flex-01:~/public/iron-golem-math-adventure/
 ```
