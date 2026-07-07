@@ -11,7 +11,6 @@ export const vi = {
 
   hud: {
     level: (n: number) => `Cấp ${n}`,
-    coins: (n: number) => `${n} xu`,
   },
 
   moveHint: 'Chạm / bấm bản đồ để di chuyển • Chạm quái vật để chiến đấu',
@@ -24,7 +23,6 @@ export const vi = {
   },
 
   combat: {
-    playerName: 'Người Sắt',
     battle: '⚡ CHIẾN ĐẤU',
     exit: 'Thoát',
     levelUp: (level: number) => `⭐ LÊN CẤP ${level}! ⭐`,
@@ -37,12 +35,6 @@ export const vi = {
   vs: {
     vs: 'VS',
     playerName: 'Người Sắt',
-    difficulty: 'Độ khó',
-    easy: 'Dễ',
-    medium: 'Trung bình',
-    hard: 'Khó',
-    veryHard: 'Rất khó',
-    difficultyLabel: (label: string) => `Độ khó: ${label}`,
   },
 
   monsters: {
@@ -55,10 +47,3 @@ export const vi = {
 
   coinLabel: (amount: number) => `${amount} xu`,
 } as const;
-
-export function getDifficultyLabel(maxValue: number): string {
-  if (maxValue < 50) return vi.vs.easy;
-  if (maxValue < 150) return vi.vs.medium;
-  if (maxValue < 500) return vi.vs.hard;
-  return vi.vs.veryHard;
-}

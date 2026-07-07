@@ -7,37 +7,24 @@ export function HUD() {
   const phase = useGameStore((s) => s.phase);
   const coinsInLevel = useGameStore((s) => s.coinsInLevel);
   const level = useGameStore((s) => s.level);
-  const floatingTexts = useGameStore((s) => s.floatingTexts);
 
   if (phase !== 'explore') return null;
 
   const progress = (coinsInLevel / COINS_PER_LEVEL) * 100;
 
   return (
-    <>
-      <div className={styles.hud}>
-        <div className={styles.hudLeft}>
-          <div className={styles.statBox}>
-            <span className={styles.label}>{vi.hud.level(level)}</span>
-          </div>
-          <div className={styles.progressBar}>
-            <div className={styles.progressFill} style={{ width: `${progress}%` }} />
-            <span className={styles.progressText}>
-              {coinsInLevel}/{COINS_PER_LEVEL}
-            </span>
-          </div>
+    <div className={styles.hud}>
+      <div className={styles.hudLeft}>
+        <div className={styles.statBox}>
+          <span className={styles.label}>{vi.hud.level(level)}</span>
+        </div>
+        <div className={styles.progressBar}>
+          <div className={styles.progressFill} style={{ width: `${progress}%` }} />
+          <span className={styles.progressText}>
+            {coinsInLevel}/{COINS_PER_LEVEL}
+          </span>
         </div>
       </div>
-
-      {floatingTexts.map((ft) => (
-        <div
-          key={ft.id}
-          className={styles.floatingText}
-          style={{ left: `${ft.x}%`, top: `${ft.y}%` }}
-        >
-          {ft.text}
-        </div>
-      ))}
-    </>
+    </div>
   );
 }

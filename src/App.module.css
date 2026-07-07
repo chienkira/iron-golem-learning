@@ -29,9 +29,3 @@
   opacity: 0.9;
   margin-top: 0.1rem;
 }
-
-.tagline {
-  font-size: clamp(0.65rem, 2vw, 0.85rem);
-  color: rgba(255, 255, 255, 0.6);
-  margin-top: 0.25rem;
-}

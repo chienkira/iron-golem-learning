@@ -9,13 +9,11 @@ interface GameState {
   playerPosition: [number, number, number];
   playerRotation: number;
   level: number;
-  coins: number;
   coinsInLevel: number;
   monsters: Monster[];
   activeMonster: Monster | null;
   question: MathQuestion | null;
   userAnswer: string;
-  floatingTexts: { id: string; text: string; x: number; y: number }[];
   moveTarget: [number, number] | null;
   lastReward: number;
   mapZoom: 'normal' | 'overview';
@@ -32,8 +30,6 @@ interface GameState {
   finishVictory: () => void;
   finishLevelUp: () => void;
   exitCombat: () => void;
-  addFloatingText: (text: string, x?: number, y?: number) => void;
-  removeFloatingText: (id: string) => void;
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -41,13 +37,11 @@ export const useGameStore = create<GameState>((set, get) => ({
   playerPosition: [0, 0, 0],
   playerRotation: 0,
   level: 1,
-  coins: 0,
   coinsInLevel: 0,
   monsters: spawnInitialMonsters(),
   activeMonster: null,
   question: null,
   userAnswer: '',
-  floatingTexts: [],
   moveTarget: null,
   lastReward: 0,
   mapZoom: 'normal',
@@ -86,7 +80,7 @@ export const useGameStore = create<GameState>((set, get) => ({
   clearAnswer: () => set({ userAnswer: '' }),
 
   submitAnswer: () => {
-    const { userAnswer, question, activeMonster, coins, coinsInLevel, level, monsters } = get();
+    const { userAnswer, question, activeMonster, coinsInLevel, level, monsters } = get();
     if (!question || !activeMonster || userAnswer === '') return false;
 
     const parsed = parseInt(userAnswer, 10);
@@ -96,7 +90,6 @@ export const useGameStore = create<GameState>((set, get) => ({
     }
 
     const reward = MONSTER_CONFIGS[activeMonster.type].reward;
-    const newCoins = coins + reward;
     let newCoinsInLevel = coinsInLevel + reward;
     let newLevel = level;
     let newPhase: GamePhase = 'victory';
@@ -115,7 +108,6 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     set({
       phase: newPhase,
-      coins: newCoins,
       coinsInLevel: newCoinsInLevel,
       level: newLevel,
       monsters: updatedMonsters,
@@ -147,17 +139,4 @@ export const useGameStore = create<GameState>((set, get) => ({
       question: null,
       userAnswer: '',
     }),
-
-  addFloatingText: (text, x = 50, y = 40) => {
-    const id = `float-${Date.now()}`;
-    set((s) => ({
-      floatingTexts: [...s.floatingTexts, { id, text, x, y }],
-    }));
-    setTimeout(() => get().removeFloatingText(id), 2000);
-  },
-
-  removeFloatingText: (id) =>
-    set((s) => ({
-      floatingTexts: s.floatingTexts.filter((t) => t.id !== id),
-    })),
 }));

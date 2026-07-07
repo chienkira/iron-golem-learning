@@ -206,7 +206,7 @@ export function CombatOverlay() {
   ];
 
   return (
-    <CinematicFrame flash={flash && (phase === 'victory' || phase === 'level-up')} letterbox={false} vignette={false} grain={false}>
+    <CinematicFrame flash={flash && (phase === 'victory' || phase === 'level-up')}>
       <div className={styles.overlay}>
         {lightning && <div className={styles.lightningFlash} />}
 

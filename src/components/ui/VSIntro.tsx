@@ -48,7 +48,7 @@ export function VSIntroOverlay() {
   const config = MONSTER_CONFIGS[activeMonster.type];
 
   return (
-    <CinematicFrame flash={flash} shake={shake} letterbox={false} vignette={false} grain={false}>
+    <CinematicFrame flash={flash} shake={shake}>
       <div className={`${styles.overlay} ${exiting ? styles.overlayExiting : ''}`}>
         <div className={styles.backdrop} />
 

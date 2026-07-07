@@ -10,8 +10,6 @@ export interface MonsterConfig {
   maxValue: number;
   reward: number;
   scale: number;
-  color: string;
-  accentColor: string;
 }
 
 export interface Monster {
@@ -25,7 +23,6 @@ export interface MathQuestion {
   b: number;
   operator: '+' | '-';
   answer: number;
-  display: string;
 }
 
 export const MONSTER_CONFIGS: Record<MonsterType, MonsterConfig> = {
@@ -35,8 +32,6 @@ export const MONSTER_CONFIGS: Record<MonsterType, MonsterConfig> = {
     maxValue: 30,
     reward: 20,
     scale: 1.0,
-    color: '#6fa050',
-    accentColor: '#3f6b30',
   },
   bee: {
     type: 'bee',
@@ -44,8 +39,6 @@ export const MONSTER_CONFIGS: Record<MonsterType, MonsterConfig> = {
     maxValue: 100,
     reward: 30,
     scale: 1.05,
-    color: '#f8c627',
-    accentColor: '#1a1a1a',
   },
   zombie: {
     type: 'zombie',
@@ -53,8 +46,6 @@ export const MONSTER_CONFIGS: Record<MonsterType, MonsterConfig> = {
     maxValue: 200,
     reward: 50,
     scale: 1.35,
-    color: '#6b9a6e',
-    accentColor: '#2e86c4',
   },
   enderman: {
     type: 'enderman',
@@ -62,8 +53,6 @@ export const MONSTER_CONFIGS: Record<MonsterType, MonsterConfig> = {
     maxValue: 300,
     reward: 70,
     scale: 1.65,
-    color: '#161616',
-    accentColor: '#e040fb',
   },
   ghast: {
     type: 'ghast',
@@ -71,8 +60,6 @@ export const MONSTER_CONFIGS: Record<MonsterType, MonsterConfig> = {
     maxValue: 1000,
     reward: 100,
     scale: 1.65,
-    color: '#dedede',
-    accentColor: '#757575',
   },
 };
 

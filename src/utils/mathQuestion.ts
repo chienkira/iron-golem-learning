@@ -8,10 +8,10 @@ export function generateQuestion(type: MonsterType): MathQuestion {
   if (operator === '+') {
     const a = Math.floor(Math.random() * (maxValue - 1)) + 1;
     const b = Math.floor(Math.random() * (maxValue - a)) + 1;
-    return { a, b, operator, answer: a + b, display: `${a} + ${b} = ?` };
+    return { a, b, operator, answer: a + b };
   }
 
   const a = Math.floor(Math.random() * (maxValue - 1)) + 2;
   const b = Math.floor(Math.random() * (a - 1)) + 1;
-  return { a, b, operator, answer: a - b, display: `${a} − ${b} = ?` };
+  return { a, b, operator, answer: a - b };
 }

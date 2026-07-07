@@ -234,8 +234,7 @@ function GhastModel({ animated, scale = 1 }: { animated?: boolean; scale?: numbe
 }
 
 export function MonsterModel({ type, animated = true, position = [0, 0, 0], scale }: MonsterModelProps) {
-  const resolvedType = ((type as string) === 'skeleton' ? 'bee' : type) as MonsterType;
-  const config = MONSTER_CONFIGS[resolvedType];
+  const config = MONSTER_CONFIGS[type];
   const s = scale ?? config.scale;
 
   const models: Record<MonsterType, ReactNode> = {
@@ -246,5 +245,5 @@ export function MonsterModel({ type, animated = true, position = [0, 0, 0], scal
     ghast: <GhastModel animated={animated} scale={s} />,
   };
 
-  return <group position={position}>{models[resolvedType]}</group>;
+  return <group position={position}>{models[type]}</group>;
 }

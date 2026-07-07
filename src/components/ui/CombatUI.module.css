@@ -186,19 +186,6 @@
   border-color: #ef5350;
 }
 
-.levelUpBanner,
-.victoryBanner {
-  position: absolute;
-  top: 22%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: clamp(1.5rem, 5vw, 3rem);
-  font-weight: 700;
-  z-index: 30;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
 .rewardOverlay {
   position: absolute;
   inset: 0;
@@ -229,18 +216,6 @@
   animation: levelPulseCenter 1s ease infinite;
 }
 
-.victoryBanner {
-  color: #ffd700;
-  text-shadow: 0 0 24px #ff9800, 0 2px 8px rgba(0, 0, 0, 0.85);
-  animation: victoryPop 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.levelUpBanner {
-  color: #ffd700;
-  text-shadow: 0 0 30px #ff9800, 0 0 60px #ff5722;
-  animation: levelPulse 1s ease infinite;
-}
-
 @keyframes lightningBurst {
   0% { opacity: 0.9; }
   100% { opacity: 0; }
@@ -259,17 +234,7 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-@keyframes victoryPop {
-  from { opacity: 0; transform: translateX(-50%) scale(0.85); }
-  to { opacity: 1; transform: translateX(-50%) scale(1); }
-}
-
 @keyframes levelPulseCenter {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
-}
-
-@keyframes levelPulse {
-  0%, 100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.1); }
 }

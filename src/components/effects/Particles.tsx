@@ -72,33 +72,3 @@ export function Explosion({ position, onComplete }: ExplosionProps) {
     </points>
   );
 }
-
-interface LevelUpAuraProps {
-  onComplete: () => void;
-}
-
-export function LevelUpAura({ onComplete }: LevelUpAuraProps) {
-  const ringRef = useRef<THREE.Mesh>(null);
-  const lifeRef = useRef(0);
-
-  useFrame((_, delta) => {
-    lifeRef.current += delta;
-    if (ringRef.current) {
-      const s = 1 + lifeRef.current * 2;
-      ringRef.current.scale.set(s, s, s);
-      (ringRef.current.material as THREE.MeshBasicMaterial).opacity =
-        Math.max(0, 1 - lifeRef.current / 2);
-    }
-    if (lifeRef.current > 2) onComplete();
-  });
-
-  return (
-    <group position={[0, 1, 0]}>
-      <mesh ref={ringRef} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[1, 1.5, 32]} />
-        <meshBasicMaterial color="#ffd700" transparent opacity={0.8} side={THREE.DoubleSide} />
-      </mesh>
-      <pointLight color="#ffd700" intensity={3} distance={10} />
-    </group>
-  );
-}

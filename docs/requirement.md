@@ -49,13 +49,6 @@ Quái spawn ngẫu nhiên trên map. Mỗi loại có **giới hạn số lớn 
 
 **Nguồn cấu hình:** `src/types/game.ts` → `MONSTER_CONFIGS`
 
-**Nhãn độ khó** (`getDifficultyLabel` trong `src/i18n/vi.ts`):
-
-- `< 50` → Dễ  
-- `< 150` → Trung bình  
-- `< 500` → Khó  
-- `≥ 500` → Rất khó  
-
 **Spawn:** ~20 quái ban đầu; sau mỗi trận thắng nếu còn `< 14` quái thì spawn thêm 1 con ngẫu nhiên.
 
 ## 4. Trải nghiệm chiến đấu
