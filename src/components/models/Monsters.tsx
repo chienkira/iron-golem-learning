@@ -9,7 +9,6 @@ import { VoxelBox } from './IronGolem';
 interface MonsterModelProps {
   type: MonsterType;
   animated?: boolean;
-  position?: [number, number, number];
   scale?: number;
 }
 
@@ -233,7 +232,7 @@ function GhastModel({ animated, scale = 1 }: { animated?: boolean; scale?: numbe
   );
 }
 
-export function MonsterModel({ type, animated = true, position = [0, 0, 0], scale }: MonsterModelProps) {
+export function MonsterModel({ type, animated = true, scale }: MonsterModelProps) {
   const config = MONSTER_CONFIGS[type];
   const s = scale ?? config.scale;
 
@@ -245,5 +244,5 @@ export function MonsterModel({ type, animated = true, position = [0, 0, 0], scal
     ghast: <GhastModel animated={animated} scale={s} />,
   };
 
-  return <group position={position}>{models[type]}</group>;
+  return <group>{models[type]}</group>;
 }

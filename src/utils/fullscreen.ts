@@ -66,7 +66,7 @@ export function isGameFullscreen(): boolean {
   return !!document.fullscreenElement || document.documentElement.classList.contains('game-immersive');
 }
 
-export function enterGameFullscreen(options?: { autoOnly?: boolean }): void {
+function enterGameFullscreen(options?: { autoOnly?: boolean }): void {
   if (options?.autoOnly && !shouldRequestFullscreen()) return;
 
   applyImmersiveFallback();
@@ -83,7 +83,7 @@ export function enterGameFullscreen(options?: { autoOnly?: boolean }): void {
   }
 }
 
-export function exitGameFullscreen(): void {
+function exitGameFullscreen(): void {
   clearImmersiveFallback();
 
   if (!document.fullscreenElement) return;

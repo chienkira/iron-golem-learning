@@ -1,6 +1,6 @@
 import { COINS_PER_LEVEL } from '../types/game';
 
-export interface PlayerProgress {
+interface PlayerProgress {
   level: number;
   coinsInLevel: number;
 }

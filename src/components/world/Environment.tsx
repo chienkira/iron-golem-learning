@@ -281,19 +281,16 @@ function getCombatTorchPositions(): [number, number, number][] {
 
 const COMBAT_TORCH_POSITIONS = getCombatTorchPositions();
 
-export function ArenaEnvironment({ dark = false }: { dark?: boolean }) {
-  const groundColor = dark ? '#3a6644' : '#6b9b4a';
-
+export function ArenaEnvironment() {
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow position={[0, -0.01, 0]}>
         <planeGeometry args={[40, 40]} />
-        <meshStandardMaterial color={groundColor} roughness={0.95} />
+        <meshStandardMaterial color="#3a6644" roughness={0.95} />
       </mesh>
-      {dark &&
-        COMBAT_TORCH_POSITIONS.map((pos, i) => (
-          <CombatTorch key={`combat-torch-${i}`} position={pos} />
-        ))}
+      {COMBAT_TORCH_POSITIONS.map((pos, i) => (
+        <CombatTorch key={`combat-torch-${i}`} position={pos} />
+      ))}
     </group>
   );
 }

@@ -207,7 +207,7 @@ export function CombatOverlay() {
             <LightningFlash />
             <StormSky />
 
-            <ArenaEnvironment dark />
+            <ArenaEnvironment />
             <AnimatedFighter
               side="left"
               level={level}

@@ -44,20 +44,3 @@ export function ExploreScene() {
     </Canvas>
   );
 }
-
-export function CombatScene() {
-  return (
-    <Canvas
-      shadows
-      camera={{ position: [0, 5, 12], fov: 50 }}
-      style={{ width: '100%', height: '100%' }}
-      gl={{ antialias: true }}
-    >
-      <color attach="background" args={['#2c2c3e']} />
-      <fog attach="fog" args={['#2c2c3e', 15, 35]} />
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[5, 10, 5]} intensity={0.8} castShadow />
-      <hemisphereLight args={['#4a4a6a', '#1a1a2e', 0.5]} />
-    </Canvas>
-  );
-}

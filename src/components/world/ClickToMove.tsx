@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useGameStore } from '../../store/gameStore';
-import { GROUND_SIZE, MAP_BOUND } from '../../constants/map';
+import { GROUND_SIZE, MAP_SIZE } from '../../constants/map';
 import { sounds } from '../../audio/sounds';
 
 function DestinationMarker({ x, z }: { x: number; z: number }) {
@@ -54,8 +54,8 @@ export function ClickToMove() {
         position={[0, 0.02, 0]}
         onPointerDown={(e) => {
           e.stopPropagation();
-          const x = THREE.MathUtils.clamp(e.point.x, -MAP_BOUND, MAP_BOUND);
-          const z = THREE.MathUtils.clamp(e.point.z, -MAP_BOUND, MAP_BOUND);
+          const x = THREE.MathUtils.clamp(e.point.x, -MAP_SIZE, MAP_SIZE);
+          const z = THREE.MathUtils.clamp(e.point.z, -MAP_SIZE, MAP_SIZE);
           sounds.play('move');
           setMoveTarget([x, z]);
         }}

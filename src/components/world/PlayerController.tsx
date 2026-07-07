@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { useGameStore } from '../../store/gameStore';
 import { IronGolem } from '../models/IronGolem';
 import { PlayerMarker } from './PlayerMarker';
-import { MAP_BOUND, MOVE_SPEED, ARRIVAL_THRESHOLD, CAMERA_HEIGHT, CAMERA_DISTANCE, CAMERA_OVERVIEW_HEIGHT, CAMERA_OVERVIEW_DISTANCE } from '../../constants/map';
+import { MAP_SIZE, MOVE_SPEED, ARRIVAL_THRESHOLD, CAMERA_HEIGHT, CAMERA_DISTANCE, CAMERA_OVERVIEW_HEIGHT, CAMERA_OVERVIEW_DISTANCE } from '../../constants/map';
 
 export function PlayerController() {
   const groupRef = useRef<THREE.Group>(null);
@@ -71,13 +71,13 @@ export function PlayerController() {
         const step = Math.min(MOVE_SPEED * delta, dist);
         posRef.current.x = THREE.MathUtils.clamp(
           posRef.current.x + (dx / dist) * step,
-          -MAP_BOUND,
-          MAP_BOUND,
+          -MAP_SIZE,
+          MAP_SIZE,
         );
         posRef.current.z = THREE.MathUtils.clamp(
           posRef.current.z + (dz / dist) * step,
-          -MAP_BOUND,
-          MAP_BOUND,
+          -MAP_SIZE,
+          MAP_SIZE,
         );
         rotRef.current = Math.atan2(dx, dz);
       }
