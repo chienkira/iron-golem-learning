@@ -78,16 +78,6 @@
   touch-action: manipulation;
 }
 
-.features {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem 1rem;
-  font-size: clamp(0.75rem, 2.2vw, 0.9rem);
-  color: rgba(255, 255, 255, 0.55);
-}
-
 @keyframes panelIn {
   from {
     opacity: 0;

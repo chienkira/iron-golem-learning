@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useGameStore } from '../../store/gameStore';
 import { IronGolem } from '../models/IronGolem';
+import { PlayerMarker } from './PlayerMarker';
 import { MAP_BOUND, MOVE_SPEED, ARRIVAL_THRESHOLD, CAMERA_HEIGHT, CAMERA_DISTANCE, CAMERA_OVERVIEW_HEIGHT, CAMERA_OVERVIEW_DISTANCE } from '../../constants/map';
 
 export function PlayerController() {
@@ -112,6 +113,7 @@ export function PlayerController() {
 
   return (
     <group ref={groupRef}>
+      <PlayerMarker level={level} />
       <IronGolem level={level} animated walking={!!moveTarget} />
     </group>
   );

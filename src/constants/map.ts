@@ -1,5 +1,5 @@
 export const GROUND_SIZE = 100;
-export const MAP_SIZE = 80;
+export const MAP_SIZE = 90;
 export const MAP_BOUND = 90;
 export const MOVE_SPEED = 8;
 export const ARRIVAL_THRESHOLD = 1;

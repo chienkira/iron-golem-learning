@@ -1,18 +1,22 @@
-export type SoundId =
-  | 'uiClick'
-  | 'gameStart'
-  | 'move'
-  | 'vs'
-  | 'combatStart'
-  | 'digit'
-  | 'wrong'
-  | 'victory'
-  | 'levelUp'
-  | 'coin';
+import exploreBgmSrc from './game-bgm.mp3';
+import combatBgmSrc from './combat-bgm.mp3';
+import vsIntroSrc from './vs-intro.mp3';
+import answerCorrectSrc from './answer-correct.mp3';
+
+export type SoundId = 'move' | 'vsIntro' | 'answerCorrect';
+
+const EXPLORE_BGM_LOOP_FROM_SEC = 15;
+const EXPLORE_BGM_VOLUME = 0.38;
+const EXPLORE_BGM_COMBAT_VOLUME_RATIO = 0.5;
 
 class SoundEngine {
   private ctx: AudioContext | null = null;
+  private exploreBgm: HTMLAudioElement | null = null;
+  private combatBgm: HTMLAudioElement | null = null;
   private muted = false;
+  private exploreBgmActive = false;
+  private combatBgmActive = false;
+  private exploreBgmDucked = false;
 
   init() {
     if (typeof window === 'undefined') return;
@@ -30,65 +34,117 @@ class SoundEngine {
 
   toggleMute() {
     this.muted = !this.muted;
+    this.syncPlayback();
     return this.muted;
   }
 
   setMuted(muted: boolean) {
     this.muted = muted;
+    this.syncPlayback();
+  }
+
+  startExploreBgm() {
+    if (typeof window === 'undefined') return;
+    this.exploreBgmActive = true;
+    if (!this.exploreBgm) {
+      this.exploreBgm = new Audio(exploreBgmSrc);
+      this.exploreBgm.addEventListener('ended', () => {
+        if (!this.exploreBgm || !this.exploreBgmActive || this.muted) return;
+        this.exploreBgm.currentTime = EXPLORE_BGM_LOOP_FROM_SEC;
+        void this.exploreBgm.play().catch(() => {});
+      });
+    }
+    this.applyExploreBgmVolume();
+    this.syncPlayback();
+  }
+
+  duckExploreBgm() {
+    this.exploreBgmDucked = true;
+    this.applyExploreBgmVolume();
+    this.syncPlayback();
+  }
+
+  restoreExploreBgmVolume() {
+    this.exploreBgmDucked = false;
+    this.applyExploreBgmVolume();
+    this.syncPlayback();
+  }
+
+  startCombatBgm() {
+    if (typeof window === 'undefined') return;
+    this.combatBgmActive = true;
+    this.duckExploreBgm();
+    if (!this.combatBgm) {
+      this.combatBgm = new Audio(combatBgmSrc);
+      this.combatBgm.loop = true;
+      this.combatBgm.volume = 0.42;
+    }
+    this.syncPlayback();
+  }
+
+  stopCombatBgm() {
+    this.combatBgmActive = false;
+    if (this.combatBgm) {
+      this.combatBgm.pause();
+      this.combatBgm.currentTime = 0;
+    }
+    this.restoreExploreBgmVolume();
   }
 
   play(id: SoundId) {
     if (this.muted) return;
+
+    if (id === 'vsIntro') {
+      this.playClip(vsIntroSrc, 0.72);
+      return;
+    }
+
+    if (id === 'answerCorrect') {
+      this.playClip(answerCorrectSrc, 0.78);
+      return;
+    }
+
     this.init();
     if (!this.ctx) return;
 
     const t = this.ctx.currentTime;
     const g = this.ctx.createGain();
+    g.gain.value = 1.15;
     g.connect(this.ctx.destination);
 
-    switch (id) {
-      case 'uiClick':
-        this.tone(520, 0.06, 'square', 0.08, g, t, 880);
-        break;
-      case 'gameStart':
-        this.tone(392, 0.12, 'sine', 0.14, g, t, 523);
-        this.tone(523, 0.12, 'sine', 0.14, g, t + 0.1, 659);
-        this.tone(659, 0.2, 'sine', 0.16, g, t + 0.2, 784);
-        break;
-      case 'move':
-        this.tone(180, 0.05, 'triangle', 0.05, g, t, 120);
-        break;
-      case 'vs':
-        this.tone(110, 0.15, 'sawtooth', 0.12, g, t, 55);
-        this.tone(220, 0.25, 'square', 0.1, g, t + 0.05, 110);
-        break;
-      case 'combatStart':
-        this.tone(330, 0.08, 'square', 0.09, g, t, 165);
-        this.tone(440, 0.15, 'sawtooth', 0.08, g, t + 0.06, 220);
-        break;
-      case 'digit':
-        this.tone(640, 0.04, 'sine', 0.06, g, t, 900);
-        break;
-      case 'wrong':
-        this.tone(200, 0.15, 'sawtooth', 0.12, g, t, 90);
-        this.tone(150, 0.2, 'square', 0.1, g, t + 0.08, 70);
-        break;
-      case 'victory':
-        [523, 659, 784, 1047].forEach((freq, i) => {
-          this.tone(freq, 0.14, 'sine', 0.11, g, t + i * 0.1, freq * 1.5);
-        });
-        break;
-      case 'levelUp':
-        [392, 523, 659, 784, 988].forEach((freq, i) => {
-          this.tone(freq, 0.16, 'triangle', 0.12, g, t + i * 0.09, freq * 1.2);
-        });
-        break;
-      case 'coin':
-        this.tone(880, 0.08, 'sine', 0.1, g, t, 1320);
-        this.tone(1175, 0.12, 'sine', 0.08, g, t + 0.06, 1500);
-        break;
-      default:
-        break;
+    this.tone(420, 0.1, 'sine', 0.34, g, t, 680);
+    this.tone(680, 0.12, 'triangle', 0.28, g, t + 0.05, 920);
+  }
+
+  private applyExploreBgmVolume() {
+    if (!this.exploreBgm) return;
+    this.exploreBgm.volume = this.exploreBgmDucked
+      ? EXPLORE_BGM_VOLUME * EXPLORE_BGM_COMBAT_VOLUME_RATIO
+      : EXPLORE_BGM_VOLUME;
+  }
+
+  private playClip(src: string, volume: number) {
+    if (typeof window === 'undefined') return;
+    const clip = new Audio(src);
+    clip.volume = volume;
+    void clip.play().catch(() => {});
+  }
+
+  private syncPlayback() {
+    if (this.muted) {
+      this.exploreBgm?.pause();
+      this.combatBgm?.pause();
+      return;
+    }
+
+    if (this.exploreBgmActive) {
+      void this.exploreBgm?.play().catch(() => {});
+    }
+
+    if (this.combatBgmActive) {
+      void this.combatBgm?.play().catch(() => {});
+    } else {
+      this.combatBgm?.pause();
     }
   }
 

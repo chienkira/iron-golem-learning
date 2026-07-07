@@ -13,7 +13,6 @@ export function StartScreen() {
 
   const handleStart = () => {
     sounds.init();
-    sounds.play('uiClick');
     startGame();
   };
 
@@ -21,7 +20,6 @@ export function StartScreen() {
     sounds.init();
     const next = sounds.toggleMute();
     setMuted(next);
-    if (!next) sounds.play('uiClick');
   };
 
   return (
@@ -38,14 +36,6 @@ export function StartScreen() {
         <button className={styles.playBtn} onClick={handleStart} type="button">
           {vi.start.play}
         </button>
-
-        <div className={styles.features}>
-          <span>{vi.start.featureExplore}</span>
-          <span>•</span>
-          <span>{vi.start.featureCombat}</span>
-          <span>•</span>
-          <span>{vi.start.featureMath}</span>
-        </div>
       </div>
     </div>
   );

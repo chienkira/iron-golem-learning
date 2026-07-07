@@ -9,8 +9,8 @@ import { ArenaEnvironment } from '../world/Environment';
 import { Explosion } from '../effects/Particles';
 import { StormSky, LightningFlash } from '../effects/StormEffects';
 import { CinematicFrame } from './CinematicFrame';
-import { vi } from '../../i18n/vi';
 import { sounds } from '../../audio/sounds';
+import { vi } from '../../i18n/vi';
 import styles from './CombatUI.module.css';
 
 const VICTORY_DISPLAY_MS = 5200;
@@ -135,7 +135,6 @@ export function CombatOverlay() {
   const finishVictory = useGameStore((s) => s.finishVictory);
   const finishLevelUp = useGameStore((s) => s.finishLevelUp);
   const exitCombat = useGameStore((s) => s.exitCombat);
-  const addFloatingText = useGameStore((s) => s.addFloatingText);
 
   const [attacking, setAttacking] = useState(false);
   const [showExplosion, setShowExplosion] = useState(false);
@@ -143,6 +142,7 @@ export function CombatOverlay() {
   const [flash, setFlash] = useState(false);
   const [lightning, setLightning] = useState(false);
   const [combatIntroKey, setCombatIntroKey] = useState(0);
+  const [showReward, setShowReward] = useState(false);
 
   useEffect(() => {
     if (phase === 'combat') {
@@ -163,22 +163,32 @@ export function CombatOverlay() {
       setAttacking(true);
       setShowExplosion(true);
       setFlash(true);
-      addFloatingText(vi.combat.reward(lastReward));
-      const timer = setTimeout(() => {
+      setShowReward(false);
+
+      const rewardTimer = window.setTimeout(() => setShowReward(true), 450);
+      const finishTimer = window.setTimeout(() => {
         if (phase === 'level-up') finishLevelUp();
         else finishVictory();
         setAttacking(false);
         setShowExplosion(false);
         setFlash(false);
+        setShowReward(false);
       }, VICTORY_DISPLAY_MS);
-      return () => clearTimeout(timer);
+
+      return () => {
+        window.clearTimeout(rewardTimer);
+        window.clearTimeout(finishTimer);
+      };
     }
-  }, [phase, lastReward, finishVictory, finishLevelUp, addFloatingText]);
+
+    setShowReward(false);
+  }, [phase, finishVictory, finishLevelUp]);
 
   const handleSubmit = () => {
     const correct = submitAnswer();
-    if (!correct && userAnswer !== '') {
-      sounds.play('wrong');
+    if (correct) {
+      sounds.play('answerCorrect');
+    } else if (userAnswer !== '') {
       setWrongShake(true);
       setTimeout(() => setWrongShake(false), 500);
     }
@@ -203,10 +213,7 @@ export function CombatOverlay() {
         {phase === 'combat' && (
           <button
             className={styles.skipBtn}
-            onClick={() => {
-              sounds.play('uiClick');
-              exitCombat();
-            }}
+            onClick={exitCombat}
             type="button"
           >
             ✕ {vi.combat.exit}
@@ -247,45 +254,47 @@ export function CombatOverlay() {
           <span className={styles.vsBadge}>{vi.combat.battle}</span>
         </div>
 
-        <div className={styles.questionZone}>
-          <div className={`${styles.question} ${wrongShake ? styles.shake : ''}`}>
-            {question.a} {opSymbol} {question.b} ={' '}
-            <span className={styles.answerInline}>{userAnswer || vi.combat.answerPlaceholder}</span>
-          </div>
-        </div>
+        {phase === 'combat' && (
+          <>
+            <div className={styles.questionZone}>
+              <div className={`${styles.question} ${wrongShake ? styles.shake : ''}`}>
+                {question.a} {opSymbol} {question.b} ={' '}
+                <span className={styles.answerInline}>{userAnswer || vi.combat.answerPlaceholder}</span>
+              </div>
+            </div>
 
-        <div className={styles.combatPanel}>
-          <div className={styles.numpad}>
-            {digits.map(({ key, label }) => (
-              <button
-                key={key}
-                className={`${styles.numpadBtn} ${key === '✓' ? styles.submitBtn : ''} ${key === 'C' ? styles.clearBtn : ''} ${key === 'C' ? styles.clearLabel : ''}`}
-                onClick={() => {
-                  if (key === 'C') {
-                    sounds.play('uiClick');
-                    clearAnswer();
-                  } else if (key === '✓') {
-                    sounds.play('uiClick');
-                    handleSubmit();
-                  } else {
-                    sounds.play('digit');
-                    appendDigit(key);
-                  }
-                }}
-                type="button"
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {phase === 'victory' && (
-          <div className={styles.victoryBanner}>{vi.combat.reward(lastReward)}</div>
+            <div className={styles.combatPanel}>
+              <div className={styles.numpad}>
+                {digits.map(({ key, label }) => (
+                  <button
+                    key={key}
+                    className={`${styles.numpadBtn} ${key === '✓' ? styles.submitBtn : ''} ${key === 'C' ? styles.clearBtn : ''} ${key === 'C' ? styles.clearLabel : ''}`}
+                    onClick={() => {
+                      if (key === 'C') {
+                        clearAnswer();
+                      } else if (key === '✓') {
+                        handleSubmit();
+                      } else {
+                        appendDigit(key);
+                      }
+                    }}
+                    type="button"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
         )}
 
-        {phase === 'level-up' && (
-          <div className={styles.levelUpBanner}>{vi.combat.levelUp(level)}</div>
+        {showReward && (phase === 'victory' || phase === 'level-up') && (
+          <div className={styles.rewardOverlay}>
+            <div className={styles.rewardCenter}>{vi.combat.reward(lastReward)}</div>
+            {phase === 'level-up' && (
+              <div className={styles.levelUpSub}>{vi.combat.levelUp(level)}</div>
+            )}
+          </div>
         )}
       </div>
     </CinematicFrame>

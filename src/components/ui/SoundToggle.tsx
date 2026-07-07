@@ -14,7 +14,6 @@ export function SoundToggle() {
     sounds.init();
     const next = sounds.toggleMute();
     setMuted(next);
-    if (!next) sounds.play('uiClick');
   };
 
   return (

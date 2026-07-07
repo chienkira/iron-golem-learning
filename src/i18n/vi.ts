@@ -7,9 +7,6 @@ export const vi = {
     play: '▶ Bắt đầu',
     mute: '🔇 Tắt tiếng',
     unmute: '🔊 Bật tiếng',
-    featureExplore: 'Khám phá',
-    featureCombat: 'Chiến đấu',
-    featureMath: 'Học toán',
   },
 
   hud: {
@@ -31,7 +28,7 @@ export const vi = {
     battle: '⚡ CHIẾN ĐẤU',
     exit: 'Thoát',
     levelUp: (level: number) => `⭐ LÊN CẤP ${level}! ⭐`,
-    reward: (amount: number) => `+${amount} xu 🪙`,
+    reward: (amount: number) => `+${amount} xu 💰`,
     clear: 'Xóa',
     submit: '✓',
     answerPlaceholder: '?',
@@ -55,7 +52,7 @@ export const vi = {
     enderman: 'Enderman',
   },
 
-  coinLabel: (amount: number) => `🪙 ${amount} xu`,
+  coinLabel: (amount: number) => `${amount} xu`,
 } as const;
 
 export function getDifficultyLabel(maxValue: number): string {

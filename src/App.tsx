@@ -20,7 +20,6 @@ function TitleScreen() {
     <div className={styles.titleOverlay}>
       <h1 className={styles.title}>{vi.gameTitle}</h1>
       <p className={styles.subtitle}>{vi.gameSubtitle}</p>
-      <p className={styles.tagline}>{vi.tagline}</p>
     </div>
   );
 }
