@@ -5,8 +5,8 @@ export const vi = {
 
   start: {
     play: '▶ Bắt đầu',
-    mute: '🔇 Tắt tiếng',
-    unmute: '🔊 Bật tiếng',
+    mute: '🔊 Tắt tiếng',
+    unmute: '🔇 Bật tiếng',
   },
 
   hud: {
