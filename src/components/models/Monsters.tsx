@@ -16,8 +16,9 @@ interface MonsterModelProps {
 const MC = {
   creeper: { light: '#6fa050', dark: '#3f6b30', face: '#1a1a1a' },
   bee: { yellow: '#f8c627', black: '#1a1a1a', wing: '#eef2f8' },
-  zombie: { skin: '#71987a', shirt: '#3a8eb2', pants: '#4b2e85', hair: '#2a2a2a', eye: '#1a1a1a' },
+  zombie: { skin: '#6b9a6e', shirt: '#2e86c4', pants: '#5c3a9a', eye: '#1a1a1a' },
   enderman: { body: '#161616', eye: '#e040fb' },
+  ghast: { body: '#dedede', mark: '#757575' },
 } as const;
 
 function CreeperModel({ animated, scale = 1 }: { animated?: boolean; scale?: number }) {
@@ -104,7 +105,7 @@ function BeeModel({ animated, scale = 1 }: { animated?: boolean; scale?: number 
 
 function ZombieModel({ animated, scale = 1 }: { animated?: boolean; scale?: number }) {
   const ref = useRef<THREE.Group>(null);
-  const { skin, shirt, pants, hair, eye } = MC.zombie;
+  const { skin, shirt, pants, eye } = MC.zombie;
 
   useFrame(() => {
     if (!ref.current || !animated) return;
@@ -115,13 +116,12 @@ function ZombieModel({ animated, scale = 1 }: { animated?: boolean; scale?: numb
   return (
     <group ref={ref} scale={scale}>
       <VoxelBox position={[0, 1.35, 0]} size={[0.55, 0.55, 0.55]} color={skin} />
-      <VoxelBox position={[0, 1.52, 0]} size={[0.57, 0.12, 0.57]} color={hair} />
       <VoxelBox position={[-0.12, 1.38, 0.28]} size={[0.1, 0.08, 0.02]} color={eye} />
       <VoxelBox position={[0.12, 1.38, 0.28]} size={[0.1, 0.08, 0.02]} color={eye} />
       <VoxelBox position={[0, 1.22, 0.28]} size={[0.08, 0.06, 0.02]} color={skin} />
       <VoxelBox position={[0, 0.65, 0]} size={[0.55, 0.7, 0.3]} color={shirt} />
-      <VoxelBox position={[-0.42, 0.65, 0]} size={[0.22, 0.65, 0.22]} color={shirt} />
-      <VoxelBox position={[0.42, 0.65, 0]} size={[0.22, 0.65, 0.22]} color={shirt} />
+      <VoxelBox position={[-0.42, 0.65, 0]} size={[0.22, 0.65, 0.22]} color={skin} />
+      <VoxelBox position={[0.42, 0.65, 0]} size={[0.22, 0.65, 0.22]} color={skin} />
       <VoxelBox position={[-0.14, 0.22, 0]} size={[0.22, 0.44, 0.22]} color={pants} />
       <VoxelBox position={[0.14, 0.22, 0]} size={[0.22, 0.44, 0.22]} color={pants} />
     </group>
@@ -139,26 +139,96 @@ function EndermanModel({ animated, scale = 1 }: { animated?: boolean; scale?: nu
 
   return (
     <group ref={ref} scale={scale}>
-      <VoxelBox position={[0, 1.25, 0]} size={[0.42, 2.2, 0.28]} color={body} />
-      <VoxelBox position={[-0.55, 1.05, 0]} size={[0.18, 2.6, 0.18]} color={body} />
-      <VoxelBox position={[0.55, 1.05, 0]} size={[0.18, 2.6, 0.18]} color={body} />
-      <VoxelBox position={[-0.14, 0.35, 0]} size={[0.18, 0.7, 0.18]} color={body} />
-      <VoxelBox position={[0.14, 0.35, 0]} size={[0.18, 0.7, 0.18]} color={body} />
-      <VoxelBox position={[0, 2.55, 0]} size={[0.5, 0.5, 0.5]} color={body} />
+      {/* Short torso */}
+      <VoxelBox position={[0, 1.55, 0]} size={[0.4, 1.0, 0.28]} color={body} />
+      {/* Long thin legs */}
+      <VoxelBox position={[-0.1, 0.52, 0]} size={[0.12, 1.05, 0.12]} color={body} />
+      <VoxelBox position={[0.1, 0.52, 0]} size={[0.12, 1.05, 0.12]} color={body} />
+      {/* Long arms, closer to body */}
+      <VoxelBox position={[-0.3, 1.1, 0]} size={[0.14, 2.15, 0.14]} color={body} />
+      <VoxelBox position={[0.3, 1.1, 0]} size={[0.14, 2.15, 0.14]} color={body} />
+      <VoxelBox position={[0, 2.45, 0]} size={[0.5, 0.5, 0.5]} color={body} />
       <VoxelBox
-        position={[-0.12, 2.58, 0.26]}
+        position={[-0.12, 2.48, 0.26]}
         size={[0.14, 0.06, 0.02]}
         color={eye}
         emissive={eye}
         emissiveIntensity={1.2}
       />
       <VoxelBox
-        position={[0.12, 2.58, 0.26]}
+        position={[0.12, 2.48, 0.26]}
         size={[0.14, 0.06, 0.02]}
         color={eye}
         emissive={eye}
         emissiveIntensity={1.2}
       />
+    </group>
+  );
+}
+
+function GhastModel({ animated, scale = 1 }: { animated?: boolean; scale?: number }) {
+  const ref = useRef<THREE.Group>(null);
+  const { body, mark } = MC.ghast;
+
+  useFrame(() => {
+    if (!ref.current || !animated) return;
+    const t = Date.now() * 0.002;
+    ref.current.position.y = 1.05 + Math.sin(t) * 0.1;
+    ref.current.rotation.y = Math.sin(t * 0.35) * 0.06;
+  });
+
+  const tentacleGrid: [number, number][] = [
+    [-0.22, -0.22],
+    [0, -0.22],
+    [0.22, -0.22],
+    [-0.22, 0],
+    [0, 0],
+    [0.22, 0],
+    [-0.22, 0.22],
+    [0, 0.22],
+    [0.22, 0.22],
+  ];
+
+  const sideSpots: [number, number, number, number, number, number][] = [
+    [0.51, 1.08, -0.18, 0.02, 0.04, 0.1],
+    [0.51, 0.92, 0.14, 0.02, 0.04, 0.12],
+    [0.51, 1.18, 0.05, 0.02, 0.04, 0.08],
+    [-0.51, 1.02, -0.1, 0.02, 0.04, 0.11],
+    [-0.51, 0.88, 0.16, 0.02, 0.04, 0.09],
+    [0.08, 1.12, -0.51, 0.1, 0.04, 0.02],
+    [-0.12, 0.95, -0.51, 0.12, 0.04, 0.02],
+    [0.16, 1.05, -0.51, 0.08, 0.04, 0.02],
+  ];
+
+  return (
+    <group ref={ref} scale={scale}>
+      <VoxelBox position={[0, 1.05, 0]} size={[1.0, 1.0, 1.0]} color={body} />
+
+      {/* Crying face */}
+      <VoxelBox position={[-0.2, 1.1, 0.51]} size={[0.16, 0.05, 0.02]} color={mark} />
+      <VoxelBox position={[0.2, 1.1, 0.51]} size={[0.16, 0.05, 0.02]} color={mark} />
+      <VoxelBox position={[-0.2, 0.96, 0.51]} size={[0.05, 0.16, 0.02]} color={mark} />
+      <VoxelBox position={[0.2, 0.96, 0.51]} size={[0.05, 0.16, 0.02]} color={mark} />
+      <VoxelBox position={[0, 0.86, 0.51]} size={[0.12, 0.05, 0.02]} color={mark} />
+
+      {/* Top trident patterns */}
+      {([-0.22, 0.22] as const).map((x) => (
+        <group key={x}>
+          <VoxelBox position={[x, 1.56, 0.06]} size={[0.05, 0.03, 0.14]} color={mark} />
+          <VoxelBox position={[x - 0.07, 1.56, 0.02]} size={[0.05, 0.03, 0.1]} color={mark} />
+          <VoxelBox position={[x + 0.07, 1.56, 0.02]} size={[0.05, 0.03, 0.1]} color={mark} />
+        </group>
+      ))}
+
+      {/* Side pixel dashes */}
+      {sideSpots.map(([x, y, z, w, h, d], i) => (
+        <VoxelBox key={i} position={[x, y, z]} size={[w, h, d]} color={mark} />
+      ))}
+
+      {/* Nine hanging tentacles */}
+      {tentacleGrid.map(([x, z], i) => (
+        <VoxelBox key={i} position={[x, 0.38, z]} size={[0.08, 0.26, 0.08]} color={body} />
+      ))}
     </group>
   );
 }
@@ -173,6 +243,7 @@ export function MonsterModel({ type, animated = true, position = [0, 0, 0], scal
     bee: <BeeModel animated={animated} scale={s} />,
     zombie: <ZombieModel animated={animated} scale={s} />,
     enderman: <EndermanModel animated={animated} scale={s} />,
+    ghast: <GhastModel animated={animated} scale={s} />,
   };
 
   return <group position={position}>{models[resolvedType]}</group>;

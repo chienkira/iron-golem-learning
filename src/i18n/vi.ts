@@ -50,6 +50,7 @@ export const vi = {
     bee: 'Ong Vàng',
     zombie: 'Thây Ma',
     enderman: 'Enderman',
+    ghast: 'Ghast',
   },
 
   coinLabel: (amount: number) => `${amount} xu`,

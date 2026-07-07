@@ -13,10 +13,11 @@ const MONSTER_WANDER: Record<
   MonsterType,
   { speed: number; radius: number; hop?: boolean }
 > = {
-  creeper: { speed: 1.0, radius: 5 },
-  bee: { speed: 1.3, radius: 4, hop: true },
-  zombie: { speed: 0.85, radius: 5 },
-  enderman: { speed: 1.2, radius: 6 },
+  creeper: { speed: 1.0, radius: 4 },
+  bee: { speed: 1.6, radius: 6, hop: true },
+  zombie: { speed: 0.6, radius: 4 },
+  enderman: { speed: 1.0, radius: 4 },
+  ghast: { speed: 0.4, radius: 6, hop: true },
 };
 
 const FIGHT_PHASES = new Set(['vs-intro', 'combat', 'victory', 'level-up']);
@@ -51,7 +52,7 @@ function MapMonster({ monster }: MapMonsterProps) {
           document.body.style.cursor = 'default';
         }}
       >
-        <MonsterModel type={monster.type} animated={monster.type === 'bee'} />
+        <MonsterModel type={monster.type} animated={monster.type === 'bee' || monster.type === 'ghast'} />
         <MonsterCoinLabel type={monster.type} />
         <mesh visible={false}>
           <cylinderGeometry args={[1.4, 1.4, 3.5, 8]} />

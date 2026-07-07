@@ -1,6 +1,6 @@
 import { vi } from '../i18n/vi';
 
-export type MonsterType = 'creeper' | 'bee' | 'zombie' | 'enderman';
+export type MonsterType = 'creeper' | 'bee' | 'zombie' | 'enderman' | 'ghast';
 
 export type GamePhase = 'menu' | 'explore' | 'vs-intro' | 'combat' | 'victory' | 'level-up';
 
@@ -42,7 +42,7 @@ export const MONSTER_CONFIGS: Record<MonsterType, MonsterConfig> = {
     type: 'bee',
     name: vi.monsters.bee,
     maxValue: 100,
-    reward: 50,
+    reward: 30,
     scale: 1.05,
     color: '#f8c627',
     accentColor: '#1a1a1a',
@@ -51,22 +51,31 @@ export const MONSTER_CONFIGS: Record<MonsterType, MonsterConfig> = {
     type: 'zombie',
     name: vi.monsters.zombie,
     maxValue: 200,
-    reward: 70,
+    reward: 50,
     scale: 1.35,
-    color: '#71987a',
-    accentColor: '#3a8eb2',
+    color: '#6b9a6e',
+    accentColor: '#2e86c4',
   },
   enderman: {
     type: 'enderman',
     name: vi.monsters.enderman,
-    maxValue: 1000,
-    reward: 100,
+    maxValue: 300,
+    reward: 70,
     scale: 1.65,
     color: '#161616',
     accentColor: '#e040fb',
   },
+  ghast: {
+    type: 'ghast',
+    name: vi.monsters.ghast,
+    maxValue: 1000,
+    reward: 100,
+    scale: 1.65,
+    color: '#dedede',
+    accentColor: '#757575',
+  },
 };
 
-export const MONSTER_TYPES: MonsterType[] = ['creeper', 'bee', 'zombie', 'enderman'];
+export const MONSTER_TYPES: MonsterType[] = ['creeper', 'bee', 'zombie', 'enderman', 'ghast'];
 
 export const COINS_PER_LEVEL = 100;
