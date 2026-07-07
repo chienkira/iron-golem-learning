@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { sounds } from '../../audio/sounds';
+import { requestGameFullscreen } from '../../utils/fullscreen';
 import { vi } from '../../i18n/vi';
 import styles from './StartScreen.module.css';
 
@@ -12,6 +13,7 @@ export function StartScreen() {
   if (phase !== 'menu') return null;
 
   const handleStart = () => {
+    requestGameFullscreen();
     sounds.init();
     startGame();
   };
