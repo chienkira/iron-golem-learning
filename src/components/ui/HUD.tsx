@@ -21,7 +21,7 @@ export function HUD() {
         <div className={styles.progressBar}>
           <div className={styles.progressFill} style={{ width: `${progress}%` }} />
           <span className={styles.progressText}>
-            {coinsInLevel}/{COINS_PER_LEVEL}
+            {vi.hud.coinsProgress(coinsInLevel, COINS_PER_LEVEL)}
           </span>
         </div>
       </div>

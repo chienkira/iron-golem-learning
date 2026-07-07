@@ -12,6 +12,7 @@ export const vi = {
 
   hud: {
     level: (n: number) => `Cấp ${n}`,
+    coinsProgress: (coins: number, max: number) => `${coins}/${max} xu`,
   },
 
   moveHint: 'Chạm bản đồ để di chuyển • Chạm quái vật để chiến đấu',
@@ -21,8 +22,8 @@ export const vi = {
   },
 
   zoom: {
-    overview: 'Bản đồ',
-    normal: 'Xem gần',
+    overview: '⊖ Bản đồ',
+    normal: '⊕ Xem gần',
   },
 
   combat: {

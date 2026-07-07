@@ -12,13 +12,8 @@ export function ZoomControl() {
   const isOverview = mapZoom === 'overview';
 
   return (
-    <button
-      className={styles.btn}
-      onClick={toggleMapZoom}
-      type="button"
-    >
-      <span className={styles.icon}>{isOverview ? '⊕' : '⊖'}</span>
-      <span className={styles.label}>{isOverview ? vi.zoom.normal : vi.zoom.overview}</span>
+    <button className={styles.btn} onClick={toggleMapZoom} type="button">
+      {isOverview ? vi.zoom.normal : vi.zoom.overview}
     </button>
   );
 }
