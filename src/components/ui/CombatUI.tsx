@@ -13,7 +13,7 @@ import { sounds } from '../../audio/sounds';
 import { vi } from '../../i18n/vi';
 import styles from './CombatUI.module.css';
 
-const VICTORY_DISPLAY_MS = 5200;
+const VICTORY_DISPLAY_MS = 3500;
 const FIGHTER_X = 6;
 
 function CombatCamera({ attacking, introKey }: { attacking: boolean; introKey: number }) {
