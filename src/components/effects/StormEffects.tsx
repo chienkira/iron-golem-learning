@@ -27,7 +27,7 @@ function StormCloud({
     ref.current.position.z = startZ.current + Math.sin(t * 0.7) * (range * 0.35);
   });
 
-  const cloudColor = '#252f3d';
+  const cloudColor = '#3d4a5c';
 
   return (
     <group ref={ref} position={position} scale={scale}>
@@ -50,16 +50,16 @@ const COMBAT_CLOUDS: {
   range: number;
   direction: 1 | -1;
 }[] = [
-  { position: [-8, 10, -4], scale: 1.4, speed: 0.22, range: 11, direction: 1 },
-  { position: [4, 11, 2], scale: 1.8, speed: 0.18, range: 13, direction: -1 },
-  { position: [-2, 12, -8], scale: 1.2, speed: 0.28, range: 9, direction: 1 },
-  { position: [10, 9, -2], scale: 1.5, speed: 0.2, range: 12, direction: -1 },
-  { position: [-12, 11.5, 1], scale: 1.6, speed: 0.24, range: 10, direction: -1 },
-  { position: [6, 10.5, -6], scale: 1.3, speed: 0.26, range: 11, direction: 1 },
-  { position: [0, 13, -3], scale: 2.0, speed: 0.16, range: 14, direction: -1 },
-  { position: [-6, 9.5, 4], scale: 1.1, speed: 0.3, range: 8, direction: 1 },
-  { position: [12, 12, -5], scale: 1.7, speed: 0.21, range: 12, direction: 1 },
-  { position: [-10, 10, 3], scale: 1.4, speed: 0.19, range: 13, direction: -1 },
+  { position: [-8, 7, -4], scale: 1.4, speed: 0.22, range: 11, direction: 1 },
+  { position: [4, 7.5, 2], scale: 1.8, speed: 0.18, range: 13, direction: -1 },
+  { position: [-2, 8.5, -8], scale: 1.2, speed: 0.28, range: 9, direction: 1 },
+  { position: [10, 6.5, -2], scale: 1.5, speed: 0.2, range: 12, direction: -1 },
+  { position: [-12, 8, 1], scale: 1.6, speed: 0.24, range: 10, direction: -1 },
+  { position: [6, 7.2, -6], scale: 1.3, speed: 0.26, range: 11, direction: 1 },
+  { position: [0, 9, -3], scale: 2.0, speed: 0.16, range: 14, direction: -1 },
+  { position: [-6, 6.8, 4], scale: 1.1, speed: 0.3, range: 8, direction: 1 },
+  { position: [12, 8.5, -5], scale: 1.7, speed: 0.21, range: 12, direction: 1 },
+  { position: [-10, 7, 3], scale: 1.4, speed: 0.19, range: 13, direction: -1 },
 ];
 
 export function StormSky() {

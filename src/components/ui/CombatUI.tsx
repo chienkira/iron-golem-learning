@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useGameStore } from '../../store/gameStore';
 import { MONSTER_CONFIGS, type MonsterType } from '../../types/game';
@@ -15,6 +14,7 @@ import { sounds } from '../../audio/sounds';
 import styles from './CombatUI.module.css';
 
 const VICTORY_DISPLAY_MS = 5200;
+const FIGHTER_X = 6;
 
 function CombatCamera({ attacking, introKey }: { attacking: boolean; introKey: number }) {
   const startTime = useRef(Date.now());
@@ -31,10 +31,10 @@ function CombatCamera({ attacking, introKey }: { attacking: boolean; introKey: n
     const introT = Math.min(introElapsed / 0.85, 1);
     const introEase = 1 - Math.pow(1 - introT, 3);
 
-    const targetZ = attacking ? 17 : 20;
-    const baseZ = THREE.MathUtils.lerp(32, targetZ, introEase);
-    const baseY = THREE.MathUtils.lerp(6.5, 5.5, introEase);
-    const fov = THREE.MathUtils.lerp(48, 42, introEase);
+    const targetZ = attacking ? 14 : 16;
+    const baseZ = THREE.MathUtils.lerp(28, targetZ, introEase);
+    const baseY = THREE.MathUtils.lerp(5.8, 4.8, introEase);
+    const fov = THREE.MathUtils.lerp(44, 38, introEase);
     const sway = introT >= 1 ? Math.sin(t * 0.4) * 0.12 : 0;
 
     if (camera instanceof THREE.PerspectiveCamera && Math.abs(camera.fov - fov) > 0.01) {
@@ -49,56 +49,14 @@ function CombatCamera({ attacking, introKey }: { attacking: boolean; introKey: n
   return null;
 }
 
-function getPlayerLabelY(level: number): number {
-  const levelScale = 1 + (level - 1) * 0.08;
-  return 2.85 * 1.4 * levelScale + 0.25;
-}
-
-function getMonsterLabelY(type: MonsterType): number {
-  const scale = (MONSTER_CONFIGS[type]?.scale ?? 1) * 1.4;
-  const modelTop: Record<MonsterType, number> = {
-    creeper: 1.5,
-    bee: 1.35,
-    zombie: 1.5,
-    enderman: 2.75,
-  };
-  return modelTop[type] * scale + 0.25;
-}
-
-function FighterNameLabel({
-  name,
-  y,
-  variant,
-}: {
-  name: string;
-  y: number;
-  variant: 'player' | 'monster';
-}) {
-  return (
-    <Html
-      position={[0, y, 0]}
-      center
-      distanceFactor={10}
-      zIndexRange={[50, 0]}
-      style={{ pointerEvents: 'none', userSelect: 'none' }}
-    >
-      <div className={`${styles.headName} ${variant === 'player' ? styles.headNamePlayer : styles.headNameMonster}`}>
-        {name}
-      </div>
-    </Html>
-  );
-}
-
 function AnimatedFighter({
   side,
   type,
-  name,
   level,
   attacking,
 }: {
   side: 'left' | 'right';
   type?: MonsterType;
-  name: string;
   level: number;
   attacking: boolean;
 }) {
@@ -126,7 +84,7 @@ function AnimatedFighter({
 
     if (attacking && side === 'left') {
       ref.current.rotation.z = Math.sin(Date.now() * 0.018) * 0.2;
-      ref.current.position.x = -4.5 + Math.sin(Date.now() * 0.012) * 0.6;
+      ref.current.position.x = -FIGHTER_X + Math.sin(Date.now() * 0.012) * 0.6;
     } else if (attacking && side === 'right') {
       if (monsterGone) return;
       const start = defeatStart.current ?? Date.now();
@@ -149,11 +107,8 @@ function AnimatedFighter({
 
   if (side === 'right' && monsterGone) return null;
 
-  const labelY =
-    side === 'left' ? getPlayerLabelY(level) : type ? getMonsterLabelY(type) : 2.5;
-
   return (
-    <group ref={ref} position={[side === 'left' ? -4.5 : 4.5, 0, 0]}>
+    <group ref={ref} position={[side === 'left' ? -FIGHTER_X : FIGHTER_X, 0, 0]}>
       {side === 'left' ? (
         <IronGolem level={level} scale={1.4} animated rotation={0.35} />
       ) : type ? (
@@ -163,11 +118,6 @@ function AnimatedFighter({
           scale={(MONSTER_CONFIGS[type]?.scale ?? 1) * 1.4}
         />
       ) : null}
-      <FighterNameLabel
-        name={name}
-        y={labelY}
-        variant={side === 'left' ? 'player' : 'monster'}
-      />
     </group>
   );
 }
@@ -237,7 +187,6 @@ export function CombatOverlay() {
   if (phase !== 'combat' && phase !== 'victory' && phase !== 'level-up') return null;
   if (!activeMonster || !question) return null;
 
-  const config = MONSTER_CONFIGS[activeMonster.type];
   const opSymbol = question.operator === '+' ? '+' : '−';
   const digits: { key: string; label: string }[] = [
     ...['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((key) => ({ key, label: key })),
@@ -265,33 +214,31 @@ export function CombatOverlay() {
         )}
 
         <div className={`${styles.sceneBg} ${phase === 'combat' ? styles.sceneEnter : ''}`} key={combatIntroKey}>
-          <Canvas shadows camera={{ position: [0, 6.5, 32], fov: 48 }}>
-            <color attach="background" args={['#3d4f63']} />
-            <fog attach="fog" args={['#4a5d72', 18, 45]} />
+          <Canvas shadows camera={{ position: [0, 5.8, 28], fov: 44 }}>
+            <color attach="background" args={['#526580']} />
+            <fog attach="fog" args={['#607892', 26, 58]} />
             <CombatCamera introKey={combatIntroKey} attacking={attacking} />
-            <ambientLight intensity={0.48} />
-            <directionalLight position={[5, 12, 8]} intensity={0.65} color="#b0c4d8" castShadow />
-            <hemisphereLight args={['#6a8098', '#2d4530', 0.55]} />
+            <ambientLight intensity={0.58} />
+            <directionalLight position={[5, 12, 8]} intensity={0.78} color="#c8d8ea" castShadow />
+            <hemisphereLight args={['#7a92aa', '#3d5a42', 0.65]} />
             <LightningFlash />
             <StormSky />
 
             <ArenaEnvironment dark />
             <AnimatedFighter
               side="left"
-              name={vi.combat.playerName}
               level={level}
               attacking={attacking}
             />
             <AnimatedFighter
               side="right"
-              name={config.name}
               type={activeMonster.type}
               level={level}
               attacking={attacking}
             />
 
             {showExplosion && (
-              <Explosion position={[5, 0, 0]} onComplete={() => setShowExplosion(false)} />
+              <Explosion position={[FIGHTER_X, 0, 0]} onComplete={() => setShowExplosion(false)} />
             )}
           </Canvas>
         </div>

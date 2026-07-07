@@ -265,7 +265,7 @@ export function Environment() {
 }
 
 export function ArenaEnvironment({ dark = false }: { dark?: boolean }) {
-  const groundColor = dark ? '#2d5034' : '#6b9b4a';
+  const groundColor = dark ? '#3a6644' : '#6b9b4a';
 
   return (
     <group>
@@ -275,8 +275,8 @@ export function ArenaEnvironment({ dark = false }: { dark?: boolean }) {
       </mesh>
       {dark && (
         <>
-          <CombatTorch position={[-4.5, 0, 2.2]} />
-          <CombatTorch position={[4.5, 0, 2.2]} />
+          <CombatTorch position={[-6, 0, 1.6]} />
+          <CombatTorch position={[6, 0, 1.6]} />
         </>
       )}
     </group>
@@ -294,33 +294,35 @@ function CombatTorch({ position }: { position: [number, number, number] }) {
 
   return (
     <group position={position}>
-      <mesh position={[0, 0.15, 0]} receiveShadow>
-        <boxGeometry args={[0.55, 0.3, 0.55]} />
-        <meshStandardMaterial color="#4e342e" roughness={0.95} />
+      {/* Minecraft ground torch: short stick + blocky flame */}
+      <mesh position={[0, 0.2, 0]} castShadow receiveShadow>
+        <boxGeometry args={[0.14, 0.4, 0.14]} />
+        <meshStandardMaterial color="#5d4037" roughness={0.9} />
       </mesh>
-      <mesh position={[0, 1.15, 0]} castShadow>
-        <boxGeometry args={[0.24, 2.1, 0.24]} />
-        <meshStandardMaterial color="#5d4037" roughness={0.85} />
-      </mesh>
-      <mesh position={[0, 0.55, 0]}>
-        <boxGeometry args={[0.32, 0.12, 0.32]} />
-        <meshStandardMaterial color="#6d4c41" roughness={0.8} />
-      </mesh>
-      <mesh position={[0, 2.4, 0]}>
-        <boxGeometry args={[0.38, 0.5, 0.38]} />
+      <mesh position={[0, 0.46, 0]}>
+        <boxGeometry args={[0.2, 0.2, 0.2]} />
         <meshStandardMaterial
-          color="#ffb74d"
-          emissive="#ff5722"
-          emissiveIntensity={1.4}
+          color="#ff8f00"
+          emissive="#e65100"
+          emissiveIntensity={1.2}
+          toneMapped={false}
+        />
+      </mesh>
+      <mesh position={[0, 0.62, 0]}>
+        <boxGeometry args={[0.16, 0.16, 0.16]} />
+        <meshStandardMaterial
+          color="#ffca28"
+          emissive="#ff6f00"
+          emissiveIntensity={1.6}
           toneMapped={false}
         />
       </mesh>
       <pointLight
         ref={lightRef}
-        position={[0, 2.55, 0]}
+        position={[0, 0.55, 0]}
         color="#ff9a56"
-        intensity={4.2}
-        distance={18}
+        intensity={3.8}
+        distance={14}
         decay={2}
         castShadow
         shadow-mapSize={[512, 512]}

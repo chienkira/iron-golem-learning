@@ -37,45 +37,78 @@ function CreeperModel({ animated, scale = 1 }: { animated?: boolean; scale?: num
 
 function BeeModel({ animated, scale = 1 }: { animated?: boolean; scale?: number }) {
   const ref = useRef<THREE.Group>(null);
-  const wingRef = useRef<THREE.Group>(null);
 
   useFrame(() => {
     if (!ref.current || !animated) return;
     const t = Date.now() * 0.004;
-    ref.current.position.y = 0.8 + Math.sin(t * 2) * 0.12;
-    ref.current.rotation.y = Math.sin(t * 0.5) * 0.15;
-    if (wingRef.current) {
-      wingRef.current.rotation.z = Math.sin(t * 20) * 0.4;
-    }
+    ref.current.position.y = 0.32 + Math.sin(t * 2) * 0.07;
+    ref.current.rotation.y = Math.sin(t * 0.5) * 0.1;
   });
 
-  const yellow = '#ffd700';
-  const yellowDark = '#f9a825';
+  const yellow = '#f8c627';
   const black = '#1a1a1a';
+  const wingMat = (
+    <meshStandardMaterial
+      color="#eef2f8"
+      transparent
+      opacity={0.62}
+      roughness={0.25}
+      metalness={0}
+      side={THREE.DoubleSide}
+      depthWrite={false}
+    />
+  );
+
+  const legPositions: [number, number, number][] = [
+    [-0.16, 0.16, 0.08],
+    [-0.16, 0.16, -0.06],
+    [-0.16, 0.16, -0.2],
+    [0.16, 0.16, 0.08],
+    [0.16, 0.16, -0.06],
+    [0.16, 0.16, -0.2],
+  ];
 
   return (
     <group ref={ref} scale={scale}>
-      <group ref={wingRef} position={[0, 0.9, 0]}>
-        <mesh position={[-0.55, 0.1, 0]} rotation={[0, 0, 0.3]}>
-          <boxGeometry args={[0.5, 0.04, 0.35]} />
-          <meshStandardMaterial color="#e3f2fd" transparent opacity={0.7} />
+      {/* Head */}
+      <VoxelBox position={[0, 0.38, 0.2]} size={[0.36, 0.36, 0.36]} color={yellow} />
+      <VoxelBox position={[-0.1, 0.4, 0.39]} size={[0.08, 0.08, 0.02]} color={black} />
+      <VoxelBox position={[0.1, 0.4, 0.39]} size={[0.08, 0.08, 0.02]} color={black} />
+      {/* Antennae */}
+      <VoxelBox position={[-0.09, 0.6, 0.16]} size={[0.05, 0.16, 0.05]} color={black} />
+      <VoxelBox position={[0.09, 0.6, 0.16]} size={[0.05, 0.16, 0.05]} color={black} />
+
+      {/* Thorax */}
+      <VoxelBox position={[0, 0.34, -0.02]} size={[0.34, 0.3, 0.34]} color={yellow} />
+      <VoxelBox position={[0, 0.34, -0.02]} size={[0.36, 0.1, 0.36]} color={black} />
+
+      {/* Abdomen with Minecraft-style stripes */}
+      <VoxelBox position={[0, 0.32, -0.24]} size={[0.32, 0.28, 0.2]} color={yellow} />
+      <VoxelBox position={[0, 0.32, -0.34]} size={[0.32, 0.1, 0.22]} color={black} />
+      <VoxelBox position={[0, 0.32, -0.44]} size={[0.3, 0.24, 0.18]} color={yellow} />
+      <VoxelBox position={[0, 0.32, -0.52]} size={[0.3, 0.1, 0.18]} color={black} />
+      <VoxelBox position={[0, 0.3, -0.6]} size={[0.26, 0.2, 0.14]} color={yellow} />
+      <VoxelBox position={[0, 0.28, -0.66]} size={[0.22, 0.1, 0.12]} color={black} />
+
+      {/* Stinger */}
+      <VoxelBox position={[0, 0.26, -0.74]} size={[0.06, 0.06, 0.1]} color={black} />
+
+      {/* Six legs */}
+      {legPositions.map((pos, i) => (
+        <VoxelBox key={i} position={pos} size={[0.05, 0.1, 0.05]} color={black} />
+      ))}
+
+      {/* Wings — large translucent panels like Minecraft */}
+      <group position={[0, 0.38, -0.02]}>
+        <mesh position={[-0.34, 0, 0.02]} rotation={[0.15, 0.1, 0.35]}>
+          <boxGeometry args={[0.58, 0.025, 0.46]} />
+          {wingMat}
         </mesh>
-        <mesh position={[0.55, 0.1, 0]} rotation={[0, 0, -0.3]}>
-          <boxGeometry args={[0.5, 0.04, 0.35]} />
-          <meshStandardMaterial color="#e3f2fd" transparent opacity={0.7} />
+        <mesh position={[0.34, 0, 0.02]} rotation={[0.15, -0.1, -0.35]}>
+          <boxGeometry args={[0.58, 0.025, 0.46]} />
+          {wingMat}
         </mesh>
       </group>
-      <VoxelBox position={[0, 0.55, 0]} size={[0.55, 0.45, 0.75]} color={yellow} />
-      <VoxelBox position={[0, 0.55, 0.1]} size={[0.58, 0.15, 0.78]} color={black} />
-      <VoxelBox position={[0, 0.7, 0.1]} size={[0.58, 0.12, 0.78]} color={yellowDark} />
-      <VoxelBox position={[0, 0.85, 0]} size={[0.5, 0.4, 0.5]} color={yellow} />
-      <VoxelBox position={[0, 0.85, 0.08]} size={[0.52, 0.12, 0.52]} color={black} />
-      <VoxelBox position={[-0.1, 1.05, 0.26]} size={[0.1, 0.1, 0.05]} color="#1a1a1a" />
-      <VoxelBox position={[0.1, 1.05, 0.26]} size={[0.1, 0.1, 0.05]} color="#1a1a1a" />
-      <VoxelBox position={[0, 0.95, 0.28]} size={[0.08, 0.06, 0.06]} color={black} />
-      <VoxelBox position={[-0.08, 1.15, 0]} size={[0.08, 0.12, 0.08]} color={black} />
-      <VoxelBox position={[0.08, 1.15, 0]} size={[0.08, 0.12, 0.08]} color={black} />
-      <VoxelBox position={[0, 0.35, -0.45]} size={[0.12, 0.12, 0.2]} color={yellowDark} emissive="#ff9800" emissiveIntensity={0.4} />
     </group>
   );
 }
