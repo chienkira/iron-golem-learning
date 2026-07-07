@@ -16,8 +16,6 @@ export function ZoomControl() {
       className={styles.btn}
       onClick={toggleMapZoom}
       type="button"
-      aria-label={isOverview ? vi.zoom.ariaNormal : vi.zoom.ariaOverview}
-      title={isOverview ? vi.zoom.ariaNormal : vi.zoom.ariaOverview}
     >
       <span className={styles.icon}>{isOverview ? '⊕' : '⊖'}</span>
       <span className={styles.label}>{isOverview ? vi.zoom.normal : vi.zoom.overview}</span>

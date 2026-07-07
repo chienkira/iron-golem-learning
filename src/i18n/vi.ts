@@ -5,8 +5,6 @@ export const vi = {
 
   start: {
     play: '▶ Bắt đầu',
-    mute: '🔇 Tắt tiếng',
-    unmute: '🔊 Bật tiếng',
     progress: (level: number, coins: number, max: number) =>
       `Cấp ${level} (${coins}/${max} xu)`,
     reset: '↺ Chơi lại từ đầu',
@@ -16,13 +14,11 @@ export const vi = {
     level: (n: number) => `Cấp ${n}`,
   },
 
-  moveHint: 'Chạm / bấm bản đồ để di chuyển • Chạm quái vật để chiến đấu',
+  moveHint: 'Chạm bản đồ để di chuyển • Chạm quái vật để chiến đấu',
 
   zoom: {
     overview: 'Bản đồ',
-    normal: 'Gần',
-    ariaOverview: 'Xem toàn bộ bản đồ',
-    ariaNormal: 'Zoom gần',
+    normal: 'Xem gần',
   },
 
   combat: {

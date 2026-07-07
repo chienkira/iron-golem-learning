@@ -21,7 +21,6 @@ export function SoundToggle() {
       className={styles.btn}
       onClick={toggle}
       type="button"
-      aria-label={muted ? vi.start.unmute : vi.start.mute}
     >
       {muted ? '🔇' : '🔊'}
     </button>
