@@ -53,7 +53,7 @@ export function generateReadingQuestion(type: MonsterType): ReadingQuestion {
   const pack = PACKS[type];
   const raw = pack.questions[Math.floor(Math.random() * pack.questions.length)];
 
-  if (type === 'creeper' || type === 'bee') {
+  if (raw.kind === 'mcq') {
     return shuffleMcq(raw);
   }
 
